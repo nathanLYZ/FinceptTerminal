@@ -2,18 +2,10 @@
 
 ## 推荐流程
 
-1. CubeMX 新建 **STM32H743VITx**，启用：
-   - ADC1/2（多通道 DMA 循环）
-   - DAC1
-   - SPI1（DDS）或 SPI4（若以太网占默认脚）
-   - USART2 + RS485 DE
-   - ETH RMII + LwIP（可选）
-   - FreeRTOS CMSIS-V2
-   - TIM6 作为 1 ms 节拍旁路检查
-2. 按 `pinmap.h` 分配引脚；若与 ETH 冲突，将 DDS 迁到 SPI4。
-3. 用本目录外的 `app/` + `services/` 源文件替换 Cube 生成的 `Core/Src/main.c` 用户段：
-   - 在 `MX_FREERTOS_Init` 中调用 `rf_app_init` + 创建与 `rf_tasks.c` 对应的真实任务。
-4. 实现 `drivers/hw_*.c` 真 HAL（当前 `drivers/hw_stub.c` 仅主机仿真）。
+1. 打开已预配置的 CubeMX 工程：[`../../target/stm32/RF1K.ioc`](../../target/stm32/RF1K.ioc)。
+2. Generate Code 后，按 [`../../target/stm32/README.md`](../../target/stm32/README.md) 把 `Drivers/RF1K` 与应用层链入，并定义 `RF_TARGET_STM32`。
+3. `RF1K_AppStart()` 创建五任务；`hw_stm32.c` 已实现 `rf_api.h` 硬件钩子。
+4. 主机无工具链时先跑：`make stm32-check`。
 
 ## 任务映射
 

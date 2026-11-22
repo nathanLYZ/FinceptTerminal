@@ -40,10 +40,12 @@ rf-power-supply/
 ## 主机验证
 
 ```bash
-cd firmware && make test
+cd firmware && make test          # 仿真 + Modbus + STM32 mock 编译
+cd firmware && make stm32-check   # 仅 STM32 驱动链接检查
 ```
 
-KiCad 8+ 打开：`hardware/kicad/rf1k/rf1k.kicad_pro`
+STM32：打开 `firmware/target/stm32/RF1K.ioc`（CubeMX）→ 见该目录 README。  
+KiCad 8+：`hardware/kicad/rf1k/rf1k.kicad_pro`
 
 ## 硬件分板
 
