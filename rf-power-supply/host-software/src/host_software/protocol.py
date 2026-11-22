@@ -39,6 +39,18 @@ class RfTransport(Protocol):
 
 
 @dataclass
+def build_fc06(slave: int, reg: int, value: int) -> bytes:
+    """Build a Modbus RTU Write-Single-Register frame (with CRC)."""
+    body = bytes([(slave & 0xFF), 0x06, (reg >> 8) & 0xFF, reg & 0xFF,
+                  (value >> 8) & 0xFF, value & 0xFF])
+    crc = 0xFFFF
+    for b in body:
+        crc ^= b
+        for _ in range(8):
+            crc = (crc >> 1) ^ 0xA001 if (crc & 1) else (crc >> 1)
+    return body + bytes([crc & 0xFF, (crc >> 8) & 0xFF])
+
+
 class SimulatedPlant:
     """First-order plant used when no hardware is connected."""
 

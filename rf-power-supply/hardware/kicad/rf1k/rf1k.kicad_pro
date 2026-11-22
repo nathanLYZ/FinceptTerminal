@@ -1,0 +1,8 @@
+{
+  "meta": { "filename": "rf1k.kicad_pro", "version": 1 },
+  "sheets": [],
+  "text_variables": {
+    "DESIGN": "RF-1K 13.56MHz 1kW",
+    "REV": "A0"
+  }
+}

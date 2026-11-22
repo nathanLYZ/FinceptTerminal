@@ -1,0 +1,53 @@
+(kicad_sch
+  (version 20231120)
+  (generator "eeschema")
+  (generator_version "8.0")
+  (uuid "f95030a5-ea3d-4832-a9c3-5313fdea8fdd")
+  (paper "A4")
+  (title_block
+    (title "RF-1K / HMI")
+    (date "2026-11-22")
+    (rev "A0")
+    (comment 1 "TFT, encoder, E-stop, status LEDs")
+  )
+  (lib_symbols)
+  (hierarchical_label "HMI_SPI"
+    (shape bidirectional)
+    (at 30 30 0)
+    (effects (font (size 1.27 1.27)) (justify left))
+    (uuid "b18bdbba-bd47-4fd4-aa2f-02c6f0c4b118")
+  )
+  (hierarchical_label "ENC_A"
+    (shape bidirectional)
+    (at 30 35 0)
+    (effects (font (size 1.27 1.27)) (justify left))
+    (uuid "2fd7dc9c-fa29-4d4f-9502-0848edd66aaa")
+  )
+  (hierarchical_label "ENC_B"
+    (shape bidirectional)
+    (at 30 40 0)
+    (effects (font (size 1.27 1.27)) (justify left))
+    (uuid "d5eef717-a796-4377-a025-948e747be32b")
+  )
+  (hierarchical_label "ESTOP_N"
+    (shape bidirectional)
+    (at 30 45 0)
+    (effects (font (size 1.27 1.27)) (justify left))
+    (uuid "650ebf49-95f4-4b1a-8e85-fa3df4cb811c")
+  )
+  (hierarchical_label "+3V3"
+    (shape bidirectional)
+    (at 30 50 0)
+    (effects (font (size 1.27 1.27)) (justify left))
+    (uuid "065f3c64-0f11-4121-97ef-5f82bc4713b4")
+  )
+  (text "HMI sheet\\n4.3in TFT SPI, EC11 encoder, status LEDs\\nE-STOP hard-breaks contactor coil\\nLocal setpoints mirror Modbus holding regs\\n\\nReplace this annotation block with real symbols/nets."
+    (exclude_from_sim no)
+    (at 90 40 0)
+    (effects (font (size 1.5 1.5)) (justify left top))
+    (uuid "115c558c-e8d7-47d8-820b-fbea79dd63dd")
+  )
+  (sheet_instances
+    (path "/" (page "1"))
+  )
+)

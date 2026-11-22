@@ -35,6 +35,15 @@ rf-power-supply/
 3. [固件设计](docs/03-firmware-design.md) — 任务划分、功率环、匹配算法
 4. [通信协议](docs/05-interfaces-protocol.md) — Modbus 寄存器与 TCP JSON
 5. [上位机](docs/04-host-software.md) — 控制台与联调流程
+6. [STM32 移植](docs/06-stm32-porting.md) — FreeRTOS 任务 / CubeMX / KiCad
+
+## 主机验证
+
+```bash
+cd firmware && make test
+```
+
+KiCad 8+ 打开：`hardware/kicad/rf1k/rf1k.kicad_pro`
 
 ## 硬件分板
 
