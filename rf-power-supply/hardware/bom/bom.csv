@@ -1,0 +1,21 @@
+Item,Qty,Ref,MPN/Example,Description,Notes
+1,1,U1,STM32H743VIT6,MCU Cortex-M7 480MHz,CTRL
+2,1,U2,AD9951,DDS 400 MSPS,OSC (or Si5351 cost-down)
+3,1,U3,LMG1210,GaN half-bridge driver,PA
+4,2,Q1/Q2,GS61008T,100V GaN HEMT,PA (parallel if needed)
+5,1,U4,AD8307,Log detector Pf,PA
+6,1,U5,AD8307,Log detector Pr,PA
+7,1,U6,W5500 or LAN8742A,Ethernet PHY/MAC,CTRL
+8,1,U7,MAX485/THVD1451,RS-485 transceiver,CTRL
+9,2,Cvac1/2,Jennings/COMET 5-500pF,Vacuum variable capacitor,MATCH
+10,2,M1/M2,NEMA17 + gearbox,Stepper for Cs/Cp,MATCH
+11,2,U8/U9,TMC2209,Stepper driver,MATCH
+12,1,T1,Custom LLC transformer,48-60V isolated bus,PSU
+13,1,U10,UCC28070 or similar,PFC controller,PSU
+14,1,U11,UCC25640,LLC controller,PSU
+15,4,F1-F4,Si8233/ADuM4121,Isolated gate drive helpers,OSC
+16,1,X1,25MHz TCXO ±2ppm,DDS reference,OSC
+17,1,—,Directional coupler 1kW 13.56MHz,30-40dB dual,PA
+18,1,—,N-Female RF connector 1.5kW,Front panel,Mech
+19,1,—,3U chassis + fans,Mechanical,Mech
+20,1,U12,ADS1115 or MCU ADC,Aux slow ADC optional,CTRL
