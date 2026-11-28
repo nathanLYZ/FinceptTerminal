@@ -33,12 +33,18 @@ AC → PSU → PA → MATCH → Load
 | [docs/04-modbus-protocol.md](docs/04-modbus-protocol.md) | Holding / Input 寄存器 |
 | [docs/match-algorithm.md](docs/match-algorithm.md) | 自动匹配算法 |
 
-## 构建
+## 构建与测试
 
 ```bash
 cd rf-power-supply
-make test
+make test   # test_modbus + test_unit + rf1k_sim
 ```
+
+| 用例 | 覆盖 |
+|------|------|
+| `test_modbus` | Modbus RTU CRC / 读写寄存器 |
+| `test_unit` | Γ·VSWR、PID、匹配收敛、System 500 W、反射故障 |
+| `rf1k_sim` | 整机冒烟（匹配 + 稳功率） |
 
 ```bash
 cmake -S . -B build -DCMAKE_CXX_COMPILER=g++

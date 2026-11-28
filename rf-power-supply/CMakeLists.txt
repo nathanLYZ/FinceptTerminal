@@ -24,6 +24,10 @@ target_link_libraries(rf1k_cli PRIVATE rf1k_core)
 add_executable(test_modbus src/apps/test_modbus.cpp src/modbus.cpp)
 target_include_directories(test_modbus PRIVATE include)
 
+add_executable(test_unit src/apps/test_unit.cpp)
+target_link_libraries(test_unit PRIVATE rf1k_core)
+
 enable_testing()
 add_test(NAME test_modbus COMMAND test_modbus)
+add_test(NAME test_unit COMMAND test_unit)
 add_test(NAME rf1k_sim COMMAND rf1k_sim)

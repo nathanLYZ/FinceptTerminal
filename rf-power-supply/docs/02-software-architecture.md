@@ -76,9 +76,15 @@ match::IActuator◀──┘ (可同一对象)
 
 见 [match-algorithm.md](match-algorithm.md)。由 `System::tickMatch` 在 Ramp/Run 且 `match_auto` 时驱动。
 
-## 6. 验证
+## 6. 测试用例
+
+| 目标 | 文件 | 覆盖 |
+|------|------|------|
+| `test_modbus` | `src/apps/test_modbus.cpp` | RTU 写 Holding / 读 Input + CRC |
+| `test_unit` | `src/apps/test_unit.cpp` | Γ/VSWR、PID、匹配收敛、System 500 W、反射故障 |
+| `rf1k_sim` | `src/apps/rf1k_sim.cpp` | 整机 8 s 冒烟（匹配 + 稳功率） |
 
 ```bash
 cd rf-power-supply && make test
-# test_modbus + rf1k_sim → 500 W / VSWR≈1.07
+# → test_modbus + test_unit + rf1k_sim
 ```
