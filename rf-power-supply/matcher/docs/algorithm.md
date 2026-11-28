@@ -42,20 +42,19 @@ IDLE → PRESET(记忆点) → COARSE(低功率) → FINE → TRACK → (失配)
                               ↘ FAULT(限位/超时)
 ```
 
-## 5. 伪代码
+## 5. C++ 形态（FreeRTOS）
 
-```c
-void match_tick(match_t *m) {
-    if (!m->enable || m->state == MATCH_IDLE) return;
-    float c0 = match_cost(m);
-    if (c0 < m->target) { m->step = m->step0; return; }
+```cpp
+class Search {
+ public:
+  void tick();  // 每 20ms 由 MatchTask 调用
+ private:
+  float tryMove(Axis, int delta);
+  // ...
+};
 
-    for (axis in {CS, CP}) {
-        float cp = try_delta(m, axis, +m->step);
-        float cm = try_delta(m, axis, -m->step);
-        keep_best(m, axis, c0, cp, cm);
-        c0 = match_cost(m);
-    }
-    adapt_step(m, c0);
-}
+// FreeRTOS:
+MatchTask::start(search, /*period_ms=*/20, "Match", /*prio=*/3, 512);
 ```
+
+完整代码：`firmware_cpp/`。

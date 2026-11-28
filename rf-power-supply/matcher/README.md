@@ -2,6 +2,9 @@
 
 匹配器软件 = **测反射 → 试探步进 → 留下更好的位置**，循环直到 VSWR / \(|\Gamma|\) 足够小。
 
+**推荐实现：C++ + FreeRTOS** → [`firmware_cpp/`](firmware_cpp/)  
+（`firmware/` 下保留同算法的 C 参考实现。）
+
 ## 最小闭环
 
 ```
@@ -12,15 +15,15 @@
   4. 改善很小则缩小 Δ；碰限位则反向
 ```
 
-## 推荐写法（三层）
+## 推荐写法（C++）
 
-| 层 | 职责 | 本目录 |
-|----|------|--------|
-| 传感 | ADC → Pf/Pr，算 \(\Gamma\)、VSWR | `firmware/match_metrics.*` |
-| 搜索 | 坐标交替 / 梯度试探 | `firmware/match_search.*` |
-| 执行 | 步进电机 STEP/DIR、限位 | `firmware/match_actuator.*`（接口） |
-| 任务 | FreeRTOS 周期调用 | `firmware/match_task.c` |
-| 仿真 | 无硬件验证收敛 | `sim/match_demo.py` |
+| 层 | 职责 | 文件 |
+|----|------|------|
+| 接口 | `IActuator` 读功率 / 走电机 | `types.hpp` |
+| 传感 | Pf/Pr → Γ、VSWR | `metrics.hpp` |
+| 搜索 | `Search::tick()` | `search.hpp/.cpp` |
+| 任务 | FreeRTOS `MatchTask::start` | `freertos_task.hpp` |
+| 仿真 | 无硬件 | `stub_actuator.hpp` + `make test` |
 
 ## 关键设计点
 
@@ -34,11 +37,15 @@
 ## 快速跑通
 
 ```bash
-# 算法仿真（无硬件）
+# C++ / FreeRTOS 风格（推荐）
+cd firmware_cpp && make test
+
+# Python 仿真
 python3 sim/match_demo.py
 
-# C 模块主机测试
+# C 参考实现
 cd firmware && make test
 ```
 
-详细算法见 [docs/algorithm.md](docs/algorithm.md)。
+详细算法见 [docs/algorithm.md](docs/algorithm.md)。  
+板上接入见 [firmware_cpp/README.md](firmware_cpp/README.md)。
