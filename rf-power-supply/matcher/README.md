@@ -1,51 +1,65 @@
-# 射频匹配器软件怎么写
+# 射频匹配器（纯 C++ / FreeRTOS）
 
-匹配器软件 = **测反射 → 试探步进 → 留下更好的位置**，循环直到 VSWR / \(|\Gamma|\) 足够小。
+整个匹配器工程为 **C++17**。算法跑在 `Search` 类里；板上用 FreeRTOS 任务周期调用 `tick()`。
 
-**推荐实现：C++ + FreeRTOS** → [`firmware_cpp/`](firmware_cpp/)  
-（`firmware/` 下保留同算法的 C 参考实现。）
-
-## 最小闭环
+## 目录
 
 ```
-每 20–100 ms:
-  1. 读 Pf、Pr  → 算 cost = |Γ| 或 Pr/(Pf+Pr)
-  2. 对轴 Cs（或 L）做 ±Δ 试探，选 cost 更小的位置
-  3. 对轴 Cp 同样做一次
-  4. 改善很小则缩小 Δ；碰限位则反向
+matcher/
+├── include/match/     # 头文件：types / metrics / search / freertos_task
+├── src/
+│   ├── search.cpp
+│   ├── freertos_task.cpp
+│   ├── stub_actuator.hpp
+│   ├── board_actuator_example.cpp
+│   └── apps/
+│       ├── match_demo.cpp   # 主机冒烟
+│       └── match_cli.cpp    # 命令行联调
+├── docs/algorithm.md
+├── Makefile
+└── CMakeLists.txt
 ```
 
-## 推荐写法（C++）
+## 算法（一句话）
 
-| 层 | 职责 | 文件 |
-|----|------|------|
-| 接口 | `IActuator` 读功率 / 走电机 | `types.hpp` |
-| 传感 | Pf/Pr → Γ、VSWR | `metrics.hpp` |
-| 搜索 | `Search::tick()` | `search.hpp/.cpp` |
-| 任务 | FreeRTOS `MatchTask::start` | `freertos_task.hpp` |
-| 仿真 | 无硬件 | `stub_actuator.hpp` + `make test` |
+每 20 ms：读 Pf/Pr → 算 \(|\Gamma|\) → 对 Cs/Cp 做 ±Δ 试探 → 留下更好位置 → 自适应步长。
 
-## 关键设计点
+## FreeRTOS 接入
 
-1. **代价函数不要用 `Pr/Pf` 直接开方当梯度**  
-   高反射时 `Pr>Pf` 会饱和。用 `Pr/(Pf+Pr)` 才有连续梯度。
-2. **低功率先粗匹配，再爬功率**（点火模式），避免高功率失配打火。
-3. **电机未停稳不要采样**（blanking 10–50 ms）。
-4. **记忆点**：按 recipe 存上次 Cs/Cp，下次预置，大幅缩短收敛。
-5. **与功率环解耦**：匹配慢（Hz～几十 Hz），功率快（kHz）；匹配恶化时可对功率做软折返。
+```cpp
+#include "match/search.hpp"
+#include "match/freertos_task.hpp"
 
-## 快速跑通
+static BoardActuator hw;                 // 实现 IActuator
+static rf::match::Search search(hw, {});
+
+void app_start() {
+  search.setEnable(true);
+  rf::match::MatchTask::start(search, 20, "Match", 3, 512);
+}
+```
+
+定义 `RF_USE_FREERTOS` 后链接真实 FreeRTOS；主机演示不需要该宏。
+
+## 构建 / 测试
 
 ```bash
-# C++ / FreeRTOS 风格（推荐）
-cd firmware_cpp && make test
-
-# Python 仿真
-python3 sim/match_demo.py
-
-# C 参考实现
-cd firmware && make test
+cd rf-power-supply/matcher
+make test
+# 或
+cmake -S . -B build-cmake -DCMAKE_CXX_COMPILER=g++
+cmake --build build-cmake && ctest --test-dir build-cmake
 ```
 
-详细算法见 [docs/algorithm.md](docs/algorithm.md)。  
-板上接入见 [firmware_cpp/README.md](firmware_cpp/README.md)。
+```bash
+./build/match_cli --cs 180 --cp 820
+```
+
+## 板上要做的事
+
+实现 `IActuator`（见 `src/board_actuator_example.cpp`）：
+
+- `readPower()` — ADC / 检波器 → Pf、Pr  
+- `move()` — STEP/DIR  
+- `hitLimit()` — 限位开关  
+- `delayMs()` — `vTaskDelay` 等待电机停稳  
