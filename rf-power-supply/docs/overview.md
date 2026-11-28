@@ -1,22 +1,9 @@
-# RF-1K 系统概览（C++ 工程）
+# 概览（入口）
 
-## 规格
+完整设计文档已按 C++ 工程重写，请从这里读：
 
-| 项 | 值 |
-|----|-----|
-| 频率 | 13.56 MHz |
-| 功率 | 0–1000 W |
-| 输出 | 50 Ω |
-| 控制 | STM32 + FreeRTOS（C++） |
-| 通信 | Modbus-RTU / 可扩展 TCP |
-
-## 软件分层
-
-1. **Hard protection**（硬件比较器，μs）  
-2. **System::tickPower** — 状态机 + PID 功率环（1 kHz）  
-3. **System::tickMatch** — `match::Search` 自动匹配（20–50 Hz）  
-4. **System::tickComm** — Modbus holding ↔ setpoints / telemetry  
-
-## 状态机
-
-`Idle → Ramp → Run`，故障 → `Fault`（清故障后回 Idle）。
+1. [01-system-overview.md](01-system-overview.md) — 规格、能量流、闭环  
+2. [02-software-architecture.md](02-software-architecture.md) — C++ 模块与 FreeRTOS  
+3. [03-hardware-design.md](03-hardware-design.md) — 分板与匹配网络  
+4. [04-modbus-protocol.md](04-modbus-protocol.md) — 寄存器协议  
+5. [match-algorithm.md](match-algorithm.md) — 自动匹配算法  

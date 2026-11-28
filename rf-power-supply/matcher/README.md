@@ -1,9 +1,9 @@
-# 已合并
+# 已合并到 C++ 总工程
 
-匹配器源码已并入上级纯 C++ 工程：
+匹配器设计与代码已并入：
 
-- 头文件：`../include/rf1k/match/`
-- 实现：`../src/match/`
-- 总控：`../include/rf1k/system.hpp`
+- 算法文档：[`../docs/match-algorithm.md`](../docs/match-algorithm.md)
+- 软件架构：[`../docs/02-software-architecture.md`](../docs/02-software-architecture.md)
+- 源码：`../include/rf1k/match/` · `../src/match/`
 
-请在 `rf-power-supply/` 根目录执行 `make test`。
+请在 `rf-power-supply/` 根目录阅读文档并执行 `make test`。
