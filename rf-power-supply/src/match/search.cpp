@@ -1,8 +1,8 @@
-#include "match/search.hpp"
+#include "rf1k/match/search.hpp"
 
-#include "match/metrics.hpp"
+#include "rf1k/match/metrics.hpp"
 
-namespace rf::match {
+namespace rf1k::match {
 
 Search::Search(IActuator& hw, Config cfg) : hw_(hw), cfg_(cfg) {
   step_ = cfg_.step0;
@@ -134,4 +134,4 @@ void Search::tick() {
   }
 }
 
-}  // namespace rf::match
+}  // namespace rf1k::match

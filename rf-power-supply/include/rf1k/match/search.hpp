@@ -1,8 +1,8 @@
 #pragma once
 
-#include "match/types.hpp"
+#include "rf1k/match/types.hpp"
 
-namespace rf::match {
+namespace rf1k::match {
 
 /**
  * Coordinate-alternating auto-matcher.
@@ -46,4 +46,4 @@ class Search {
   float last_vswr_{99.f};
 };
 
-}  // namespace rf::match
+}  // namespace rf1k::match

@@ -2,7 +2,7 @@
 
 #include <cstdint>
 
-namespace rf::match {
+namespace rf1k::match {
 
 enum class Axis : std::uint8_t { Cs = 0, Cp = 1, Count = 2 };
 
@@ -55,4 +55,4 @@ class IActuator {
   virtual bool hitLimit(Axis axis, int direction) = 0;
 };
 
-}  // namespace rf::match
+}  // namespace rf1k::match

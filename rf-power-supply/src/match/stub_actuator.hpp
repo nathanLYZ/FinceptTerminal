@@ -1,8 +1,8 @@
 #pragma once
 
-#include "match/types.hpp"
+#include "rf1k/match/types.hpp"
 
-namespace rf::match {
+namespace rf1k::match {
 
 /** Host plant: reflection falls as Cs/Cp approach 512/512. */
 class StubActuator final : public IActuator {
@@ -39,4 +39,4 @@ class StubActuator final : public IActuator {
   int pos_[2]{200, 800};
 };
 
-}  // namespace rf::match
+}  // namespace rf1k::match

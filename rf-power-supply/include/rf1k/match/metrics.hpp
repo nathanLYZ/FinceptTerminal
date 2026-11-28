@@ -1,8 +1,8 @@
 #pragma once
 
-#include "match/types.hpp"
+#include "rf1k/match/types.hpp"
 
-namespace rf::match {
+namespace rf1k::match {
 
 /** |Γ| from Pf/Pr using Pr/(Pf+Pr) so severe mismatch still has gradient. */
 inline float gammaFromPower(float pf_w, float pr_w) {
@@ -28,4 +28,4 @@ inline float cost(const PowerSample& p) {
   return gammaFromPower(p.pf_w, p.pr_w);
 }
 
-}  // namespace rf::match
+}  // namespace rf1k::match

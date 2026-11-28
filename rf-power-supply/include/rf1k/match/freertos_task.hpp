@@ -1,6 +1,6 @@
 #pragma once
 
-#include "match/search.hpp"
+#include "rf1k/match/search.hpp"
 
 #include <cstdint>
 
@@ -21,7 +21,7 @@ inline int xTaskCreate(TaskFunction_t, const char*, unsigned, void*, unsigned,
 }
 #endif
 
-namespace rf::match {
+namespace rf1k::match {
 
 /**
  * FreeRTOS task that periodically calls Search::tick().
@@ -77,4 +77,4 @@ class MatchTask {
   static TaskHandle_t handle_;
 };
 
-}  // namespace rf::match
+}  // namespace rf1k::match
