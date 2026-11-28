@@ -29,9 +29,11 @@ struct Setpoints {
   float ramp_w_s{200.f};
   float prefl_trip_w{200.f};
   float vswr_warn{2.f};
+  float power_limit_w{1000.f};  // hard cap; use 50 for dummy-load bring-up
   bool rf_on{false};
   bool match_auto{true};
   bool clear_fault{false};
+  bool bringup_50w{false};  // forces limit/ramp/trip suited to ≤50 W
 };
 
 struct Telemetry {

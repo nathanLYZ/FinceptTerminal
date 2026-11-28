@@ -65,4 +65,5 @@ Idle ──rf_on && Pset>0──▶ Ramp ──到设定──▶ Run
 | [02-software-architecture.md](02-software-architecture.md) | C++ 模块、任务、目录 |
 | [03-hardware-design.md](03-hardware-design.md) | 分板与关键电路 |
 | [04-modbus-protocol.md](04-modbus-protocol.md) | 寄存器与 RTU |
+| [05-board-bringup-50w.md](05-board-bringup-50w.md) | BoardHw + ≤50 W 假负载联调 |
 | [match-algorithm.md](match-algorithm.md) | 自动匹配算法 |

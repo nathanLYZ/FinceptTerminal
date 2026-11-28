@@ -81,10 +81,12 @@ match::IActuator◀──┘ (可同一对象)
 | 目标 | 文件 | 覆盖 |
 |------|------|------|
 | `test_modbus` | `src/apps/test_modbus.cpp` | RTU 写 Holding / 读 Input + CRC |
-| `test_unit` | `src/apps/test_unit.cpp` | Γ/VSWR、PID、匹配收敛、System 500 W、反射故障 |
-| `rf1k_sim` | `src/apps/rf1k_sim.cpp` | 整机 8 s 冒烟（匹配 + 稳功率） |
+| `test_unit` | `src/apps/test_unit.cpp` | Γ/VSWR、PID、匹配、500 W、**50 W 钳位**、反射故障 |
+| `rf1k_bringup50` | `src/apps/rf1k_bringup50.cpp` | 假负载联调：10 W→匹配→钳位 50 W |
+| `board_check` | `src/apps/board_check.cpp` | `BoardHw` + mock HAL |
+| `rf1k_sim` | `src/apps/rf1k_sim.cpp` | 整机 8 s 冒烟 |
 
 ```bash
 cd rf-power-supply && make test
-# → test_modbus + test_unit + rf1k_sim
+# board-check / bringup50 也可单独跑
 ```

@@ -6,4 +6,6 @@
 2. [02-software-architecture.md](02-software-architecture.md) — C++ 模块与 FreeRTOS  
 3. [03-hardware-design.md](03-hardware-design.md) — 分板与匹配网络  
 4. [04-modbus-protocol.md](04-modbus-protocol.md) — 寄存器协议  
-5. [match-algorithm.md](match-algorithm.md) — 自动匹配算法  
+5. [05-board-bringup-50w.md](05-board-bringup-50w.md) — BoardHw + ≤50 W 假负载联调  
+6. [match-algorithm.md](match-algorithm.md) — 自动匹配算法  
+ 

@@ -57,11 +57,16 @@ void System::stateMachine(float dt_s) {
     sp_.clear_fault = false;
   }
 
+  // Effective setpoint never exceeds power_limit_w (50 W bring-up uses this).
+  float p_set = sp_.power_set_w;
+  if (p_set > sp_.power_limit_w) p_set = sp_.power_limit_w;
+  if (sp_.bringup_50w && p_set > 50.f) p_set = 50.f;
+
   switch (state_) {
     case State::Idle:
       hw_.rfEnable(false);
       ramp_power_w_ = 0.f;
-      if (sp_.rf_on && sp_.power_set_w > 0.f && hw_.interlockOk()) {
+      if (sp_.rf_on && p_set > 0.f && hw_.interlockOk()) {
         state_ = State::Ramp;
         power_pid_.integr = 0.f;
         if (sp_.match_auto) matcher_.setEnable(true);
@@ -73,8 +78,8 @@ void System::stateMachine(float dt_s) {
         break;
       }
       ramp_power_w_ += sp_.ramp_w_s * dt_s;
-      if (ramp_power_w_ >= sp_.power_set_w) {
-        ramp_power_w_ = sp_.power_set_w;
+      if (ramp_power_w_ >= p_set) {
+        ramp_power_w_ = p_set;
         state_ = State::Run;
       }
       break;
@@ -83,12 +88,12 @@ void System::stateMachine(float dt_s) {
         state_ = State::Idle;
         break;
       }
-      if (ramp_power_w_ < sp_.power_set_w) {
+      if (ramp_power_w_ < p_set) {
         ramp_power_w_ += sp_.ramp_w_s * dt_s;
-        if (ramp_power_w_ > sp_.power_set_w) ramp_power_w_ = sp_.power_set_w;
-      } else if (ramp_power_w_ > sp_.power_set_w) {
+        if (ramp_power_w_ > p_set) ramp_power_w_ = p_set;
+      } else if (ramp_power_w_ > p_set) {
         ramp_power_w_ -= sp_.ramp_w_s * dt_s;
-        if (ramp_power_w_ < sp_.power_set_w) ramp_power_w_ = sp_.power_set_w;
+        if (ramp_power_w_ < p_set) ramp_power_w_ = p_set;
       }
       break;
     case State::Fault:

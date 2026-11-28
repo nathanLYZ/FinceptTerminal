@@ -1,6 +1,7 @@
 /**
  * Unit tests for RF-1K C++ core (no external test framework).
  */
+#include "rf1k/bringup.hpp"
 #include "rf1k/match/metrics.hpp"
 #include "rf1k/match/search.hpp"
 #include "rf1k/metrics.hpp"
@@ -131,6 +132,23 @@ void test_interlock_fault() {
   expect((sys.fault() & rf1k::Fault::HighRefl) != 0, "fault bit HighRefl");
 }
 
+void test_bringup_50w_clamp() {
+  rf1k::StubPlant plant;
+  plant.setMatchPos(512, 512);
+  rf1k::System sys(plant, plant);
+  sys.init();
+  rf1k::startBringupRf(sys, 10.f);
+  expect(sys.setpoints().power_limit_w <= 50.f, "bringup limit≤50");
+  sys.setpoints().power_set_w = 200.f;  // attempt over-limit
+  for (int t = 0; t < 6000; ++t) {
+    sys.tickPower(0.001f);
+    if (t % 20 == 0) sys.tickMatch();
+  }
+  expect(sys.telemetry().pf_w < 55.f, "bringup Pf clamped <55");
+  expect(sys.telemetry().pf_w > 35.f, "bringup Pf reached ~50");
+  expect(sys.state() == rf1k::State::Run, "bringup ends Run");
+}
+
 void test_modbus_roundtrip() {
   rf1k::ModbusMap map;
   map.init();
@@ -152,6 +170,7 @@ int main() {
   test_matcher();
   test_modbus_roundtrip();
   test_system_sim();
+  test_bringup_50w_clamp();
   test_interlock_fault();
 
   if (g_fail) {

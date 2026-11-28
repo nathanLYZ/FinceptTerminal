@@ -20,7 +20,8 @@ AC → PSU → PA → MATCH → Load
 | 系统总控 | `include/rf1k/system.hpp` · `src/system.cpp` |
 | Modbus RTU | `include/rf1k/modbus.hpp` · `src/modbus.cpp` |
 | 匹配器 | `include/rf1k/match/` |
-| 硬件端口 | `include/rf1k/platform/hw_port.hpp` · `src/platform/stub_plant.hpp` |
+| 硬件端口 | `IHardware` · `StubPlant`（主机）· `BoardHw`（板级） |
+| ≤50 W 联调 | `bringup.hpp` · `docs/05-board-bringup-50w.md` |
 | FreeRTOS 任务 | `include/rf1k/platform/freertos_app.hpp` |
 
 ## 文档
@@ -31,6 +32,7 @@ AC → PSU → PA → MATCH → Load
 | [docs/02-software-architecture.md](docs/02-software-architecture.md) | C++ 类图、任务、目录 |
 | [docs/03-hardware-design.md](docs/03-hardware-design.md) | 分板与匹配硬件 |
 | [docs/04-modbus-protocol.md](docs/04-modbus-protocol.md) | Holding / Input 寄存器 |
+| [docs/05-board-bringup-50w.md](docs/05-board-bringup-50w.md) | **板级驱动 + ≤50 W 假负载联调** |
 | [docs/match-algorithm.md](docs/match-algorithm.md) | 自动匹配算法 |
 
 ## 构建与测试
@@ -43,7 +45,9 @@ make test   # test_modbus + test_unit + rf1k_sim
 | 用例 | 覆盖 |
 |------|------|
 | `test_modbus` | Modbus RTU CRC / 读写寄存器 |
-| `test_unit` | Γ·VSWR、PID、匹配收敛、System 500 W、反射故障 |
+| `test_unit` | Γ·VSWR、PID、匹配、System 500 W、**50 W 钳位**、反射故障 |
+| `rf1k_bringup50` | 假负载联调流程：10 W→匹配→钳位 50 W |
+| `board_check` | `BoardHw` + mock HAL 编译/联调检查 |
 | `rf1k_sim` | 整机冒烟（匹配 + 稳功率） |
 
 ```bash
